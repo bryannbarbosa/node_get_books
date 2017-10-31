@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const connection = require('../database/config');
-const moment = require('moment');
 const mysql = require('mysql');
 
 router.get('/book', (req, res) => {
@@ -40,12 +39,11 @@ router.post('/book', (req, res) => {
   if ('book_name', 'pdf' in req.body) {
     connection.connect((err) => {
       let book = req.body.book_name;
-      let publish = moment().format('YYYY-MM-DD');
       let pdf = req.body.pdf;
       let values = [
-        [req.body.book_name, publish, pdf]
+        [req.body.book_name, pdf]
       ];
-      connection.query('insert into books (book_name, publish_date, book_pdf_url) values ?', [values], (err, result, fields) => {
+      connection.query('insert into books (book_name, book_pdf_url) values ?', [values], (err, result, fields) => {
         if (err)
           res.json({
               response: err,
@@ -72,7 +70,7 @@ router.put('/book/:id', (req, res) => {
       let book = req.body.book_name;
       let pdf = req.body.pdf;
       let values = [
-        [req.body.book_name, publish, pdf]
+        [req.body.book_name, pdf]
       ];
       connection.query(`update books set book_name  = '${book}', book_pdf_url = '${pdf}' where id = ${req.params.id} `, (err, result, fields) => {
         if (err)

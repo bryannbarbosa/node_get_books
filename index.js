@@ -6,7 +6,7 @@ const storage = require('./scripts/storage');
 const upload = require('./scripts/upload');
 const app = express();
 
-app.use("/uploads/documents", express.static(__dirname + '/uploads/documents'));
+
 
 const routes = [
   require('./routes/books'),
@@ -16,6 +16,8 @@ app.use(cors());
 app.use(bodyParser.json());
 
 routes.map(route => app.use('/api', route));
+
+app.use("/uploads/documents", express.static(__dirname + '/uploads/documents'));
 
 
 
